@@ -1,7 +1,5 @@
 const inquirer = require('inquirer');
-const { viewDepartments, viewRoles, viewEmployees } = require('./assets/queries.js');
-
-const employees = [ 'employees go here' ]
+const { viewDepartments, viewRoles, viewEmployees, insertDepartment, insertRole, insertEmployee } = require('./assets/queries.js');
 
 function init() {
     startCLI();
@@ -60,6 +58,7 @@ function addDepartmentCLI() {
     ])
     .then(({ department }) => {
         console.log(`${department} has been added to Departments`);
+        insertDepartment(department);
     })
     .then(() => {
         startCLI();
@@ -82,11 +81,12 @@ function addRoleCLI() {
         {
             type: 'input',
             name: 'department',
-            message: 'What department is it in?'
+            message: 'What department is it in (enter ID)?'
         },
     ])
     .then(({ role, salary, department }) => {
         console.log(`${role} has been added to Roles`);
+        insertRole(role, salary, department);
     })
     .then(() => {
         startCLI();
@@ -109,17 +109,18 @@ function addEmployeeCLI() {
         {
             type: 'input',
             name: 'role',
-            message: 'What is the their role?'
+            message: 'What is the their role (enter ID)?'
         },
         {
             type: 'input',
             name: 'manager',
-            message: 'Who is their manager?'
+            message: 'Who is their manager (enter ID)?'
         },
     ])
     .then(({ firstname, lastname, role, manager }) => {
         const name = `${firstname} ${lastname}`;
         console.log(`${name} has been added to Employees`);
+        insertEmployee(firstname, lastname, role, manager);
     })
     .then(() => {
         startCLI();
