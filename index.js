@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const { viewDepartments, viewRoles, viewEmployees } = require('./assets/queries.js');
 
 const employees = [ 'employees go here' ]
 
@@ -14,13 +15,14 @@ function startCLI() {
             name: 'option',
             message: 'Please select an option:',
             choices: [ 
-            'view all deparments', 
-            'view all roles', 
-            'view all employees', 
-            'add a department',
-            'add a role',
-            'add an employee',
-            'update an employee role'
+            'View All Departments', 
+            'View All Roles', 
+            'View All Employees', 
+            'Add a Department',
+            'Add a Role',
+            'Add an Employee',
+            'Update an Employee Role',
+            'Exit'
         ]}
     ])
     .then((res) => {
@@ -29,20 +31,22 @@ function startCLI() {
 }
 
 function checkOption(option) {
-    if(option === 'view all deparments')
-        return console.log('--show departments--');
-    if(option === 'view all roles')
-        return console.log('--show roles--');
-    if(option === 'view all employees')
-        return console.log('--show employees--');
-    if(option === 'add a department')
+    if(option === 'View All Departments')
+        return viewDepartments().then(()=>startCLI());
+    if(option === 'View All Roles')
+        return viewRoles().then(()=>startCLI());
+    if(option === 'View All Employees')
+        return viewEmployees().then(()=>startCLI());
+    if(option === 'Add a Department')
         return addDepartmentCLI();
-    if(option === 'add a role')
+    if(option === 'Add a Role')
         return addRoleCLI();
-    if(option === 'add an employee')
+    if(option === 'Add an Employee')
         return addEmployeeCLI();
-    if(option === 'update an employee role')
+    if(option === 'Update an Employee Role')
         return updateEmployeeCLI();
+    if(option === 'Exit')
+        return process.exit();
 }
 
 function addDepartmentCLI() {
