@@ -1,8 +1,11 @@
 const inquirer = require('inquirer');
-const { viewDepartments, viewRoles, viewEmployees, insertDepartment, insertRole, insertEmployee } = require('./assets/queries.js');
+const { viewDepartments, viewRoles, viewEmployees, insertDepartment, insertRole, insertEmployee, updateEmployee, fetchEmployeesArray } = require('./assets/queries.js');
+let employees = [];
 
 function init() {
     startCLI();
+    getEmployees();
+    //console.log('goodbye');
 }
 
 function startCLI() {
@@ -121,6 +124,7 @@ function addEmployeeCLI() {
         const name = `${firstname} ${lastname}`;
         console.log(`${name} has been added to Employees`);
         insertEmployee(firstname, lastname, role, manager);
+        employees.push(lastname);
     })
     .then(() => {
         startCLI();
@@ -132,22 +136,29 @@ function updateEmployeeCLI() {
     .prompt([
         {
             type: 'list',
-            name: 'employee',
+            name: 'name',
             message: 'Please select an employee:',
             choices: employees
         },
         {
             type: 'input',
             name: 'role',
-            message: 'What is their new role?'
+            message: 'What is their new role (enter ID)?'
         }
     ])
-    .then(({ employee, role }) => {
-        console.log(`${employee}'s new role is ${role}`);
+    .then(({ name, role }) => {
+        console.log(`${name}'s new role is ${role}`);
+        updateEmployee(role, name);
     })
     .then(() => {
         startCLI();
     })
+}
+
+function getEmployees() {
+    employees = [ 'Rodriguez', 'Brown', 'Lourd', 'Tupik', 'Doe', 'Singh', 'Allen', 'Chan' ];
+
+    return employees;
 }
 
 init();
